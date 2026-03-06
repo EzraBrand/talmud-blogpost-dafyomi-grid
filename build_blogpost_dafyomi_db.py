@@ -298,6 +298,13 @@ def write_html(rows: list[dict[str, str]]) -> None:
 <head>
   <meta charset=\"utf-8\" />
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
+  <meta name=\"description\" content=\"A searchable grid of my Talmud blogposts, mapped to Daf Yomi start dates, with links to original posts and ChavrutAI pages.\" />
+  <meta name=\"robots\" content=\"index,follow,max-image-preview:large\" />
+  <link rel=\"canonical\" href=\"https://ezrabrand.github.io/talmud-blogpost-dafyomi-grid/\" />
+  <meta property=\"og:type\" content=\"website\" />
+  <meta property=\"og:title\" content=\"Cataloguing My Blogposts: Daf Yomi Grid\" />
+  <meta property=\"og:description\" content=\"Search and browse my Talmud blogposts by page range, title, and Daf Yomi start date.\" />
+  <meta property=\"og:url\" content=\"https://ezrabrand.github.io/talmud-blogpost-dafyomi-grid/\" />
   <title>Cataloguing My Blogposts - Daf Yomi Grid</title>
   <style>
     :root {{
@@ -326,8 +333,8 @@ def write_html(rows: list[dict[str, str]]) -> None:
     th, td {{ border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }}
     th {{ position: sticky; top: 0; background: var(--head); font-size: 13px; text-transform: uppercase; letter-spacing: .02em; cursor: pointer; }}
     tr:nth-child(even) td {{ background: #fbfdff; }}
-    td:nth-child(1), th:nth-child(1) {{ width: 220px; white-space: normal; overflow-wrap: anywhere; word-break: break-word; }}
-    td:nth-child(2), th:nth-child(2) {{ width: 530px; }}
+    td:nth-child(1), th:nth-child(1) {{ width: 155px; white-space: normal; overflow-wrap: anywhere; word-break: break-word; }}
+    td:nth-child(2), th:nth-child(2) {{ width: 425px; }}
     td:nth-child(3), th:nth-child(3) {{ width: 160px; white-space: nowrap; }}
     a {{ color: #1f5fae; text-decoration: none; }}
     a:hover {{ text-decoration: underline; }}
