@@ -1,8 +1,8 @@
-# talmud-blogpost-dafyomi-grid
+# Talmud Blogpost Dafyomi Grid
 
-Builds a CSV, interactive local HTML grid, and iCalendar file from Ezra Brand's archived index post:
+Builds a CSV, interactive local HTML grid, and iCalendar file from my archived index post:
 
-- Source backup HTML slug: `cataloguing-my-blogposts-an-organized-78d`
+- Source backup HTML slug: [`cataloguing-my-blogposts-an-organized-78d`](https://www.ezrabrand.com/p/cataloguing-my-blogposts-an-organized-78d)
 - Output columns:
   - `page range`
   - `blogpost title`

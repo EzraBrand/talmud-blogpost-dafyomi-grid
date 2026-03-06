@@ -326,7 +326,7 @@ def write_html(rows: list[dict[str, str]]) -> None:
     th, td {{ border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }}
     th {{ position: sticky; top: 0; background: var(--head); font-size: 13px; text-transform: uppercase; letter-spacing: .02em; cursor: pointer; }}
     tr:nth-child(even) td {{ background: #fbfdff; }}
-    td:nth-child(1), th:nth-child(1) {{ width: 190px; white-space: nowrap; }}
+    td:nth-child(1), th:nth-child(1) {{ width: 65px; white-space: nowrap; }}
     td:nth-child(3), th:nth-child(3) {{ width: 170px; white-space: nowrap; }}
     a {{ color: #1f5fae; text-decoration: none; }}
     a:hover {{ text-decoration: underline; }}
