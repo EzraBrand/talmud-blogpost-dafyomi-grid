@@ -27,12 +27,13 @@
     .meta { color: var(--muted); font-size: 13px; }
     .search { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 280px; font-size: 14px; }
     .table-wrap { overflow: auto; max-height: calc(100vh - 180px); }
-    table { width: 100%; border-collapse: collapse; min-width: 980px; }
+    table { width: 100%; border-collapse: collapse; min-width: 980px; table-layout: fixed; }
     th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
     th { position: sticky; top: 0; background: var(--head); font-size: 13px; text-transform: uppercase; letter-spacing: .02em; cursor: pointer; }
     tr:nth-child(even) td { background: #fbfdff; }
-    td:nth-child(1), th:nth-child(1) { width: 65px; white-space: nowrap; }
-    td:nth-child(3), th:nth-child(3) { width: 170px; white-space: nowrap; }
+    td:nth-child(1), th:nth-child(1) { width: 110px; white-space: nowrap; }
+    td:nth-child(2), th:nth-child(2) { width: auto; }
+    td:nth-child(3), th:nth-child(3) { width: 160px; white-space: nowrap; }
     a { color: #1f5fae; text-decoration: none; }
     a:hover { text-decoration: underline; }
     .pt { color: #44566c; margin-left: 4px; white-space: nowrap; }
