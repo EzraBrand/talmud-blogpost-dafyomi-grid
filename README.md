@@ -1,4 +1,4 @@
-# Talmud Blogpost Dafyomi Grid
+# Talmud Blogpost Daf Yomi Grid
 
 Builds a CSV, interactive local HTML grid, and iCalendar file from my archived index post:
 
