@@ -1,4 +1,5 @@
-﻿import csv
+﻿import argparse
+import csv
 import hashlib
 import html
 import json
@@ -7,12 +8,12 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from urllib.request import urlopen
 
-BASE = Path(r"C:\Users\ezrab\Downloads")
-ZIP_HTML = BASE / "blog_archive_extracted" / "posts" / "135518669.cataloguing-my-blogposts-an-organized-78d.html"
-CAL_JSON = BASE / "dafyomi_2026_2036.json"
-OUT_CSV = BASE / "blogpost_dafyomi_db.csv"
-OUT_HTML = BASE / "blogpost_dafyomi_grid.html"
-OUT_ICS = BASE / "blogpost_dafyomi_calendar.ics"
+ROOT = Path(__file__).resolve().parent
+ZIP_HTML = ROOT / "blog_archive_extracted" / "posts" / "135518669.cataloguing-my-blogposts-an-organized-78d.html"
+CAL_JSON = ROOT / "dafyomi_2026_2036.json"
+OUT_CSV = ROOT / "blogpost_dafyomi_db.csv"
+OUT_HTML = ROOT / "blogpost_dafyomi_grid.html"
+OUT_ICS = ROOT / "blogpost_dafyomi_calendar.ics"
 
 HEBCAL_URL = "https://www.hebcal.com/hebcal?cfg=json&v=1&F=on&start=2026-01-01&end=2036-12-31"
 
@@ -179,9 +180,12 @@ def pick_part_links(ol_html: str) -> list[dict[str, str]]:
 
 
 def load_dafyomi_calendar() -> dict[tuple[str, int], str]:
-    with urlopen(HEBCAL_URL, timeout=30) as response:
-        payload = response.read().decode("utf-8")
-    CAL_JSON.write_text(payload, encoding="utf-8")
+    if CAL_JSON.exists():
+        payload = CAL_JSON.read_text(encoding="utf-8")
+    else:
+        with urlopen(HEBCAL_URL, timeout=30) as response:
+            payload = response.read().decode("utf-8")
+        CAL_JSON.write_text(payload, encoding="utf-8")
     data = json.loads(payload)
 
     out: dict[tuple[str, int], str] = {}
@@ -298,6 +302,13 @@ def write_html(rows: list[dict[str, str]]) -> None:
 <head>
   <meta charset=\"utf-8\" />
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
+  <meta name=\"description\" content=\"A searchable grid of my Talmud blogposts, mapped to Daf Yomi start dates, with links to original posts and ChavrutAI pages.\" />
+  <meta name=\"robots\" content=\"index,follow,max-image-preview:large\" />
+  <link rel=\"canonical\" href=\"https://ezrabrand.github.io/talmud-blogpost-dafyomi-grid/\" />
+  <meta property=\"og:type\" content=\"website\" />
+  <meta property=\"og:title\" content=\"Cataloguing My Blogposts: Daf Yomi Grid\" />
+  <meta property=\"og:description\" content=\"Search and browse my Talmud blogposts by page range, title, and Daf Yomi start date.\" />
+  <meta property=\"og:url\" content=\"https://ezrabrand.github.io/talmud-blogpost-dafyomi-grid/\" />
   <title>Cataloguing My Blogposts - Daf Yomi Grid</title>
   <style>
     :root {{
@@ -322,12 +333,13 @@ def write_html(rows: list[dict[str, str]]) -> None:
     .meta {{ color: var(--muted); font-size: 13px; }}
     .search {{ border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 280px; font-size: 14px; }}
     .table-wrap {{ overflow: auto; max-height: calc(100vh - 180px); }}
-    table {{ width: 100%; border-collapse: collapse; min-width: 980px; }}
+    table {{ width: 100%; border-collapse: collapse; min-width: 980px; table-layout: fixed; }}
     th, td {{ border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }}
     th {{ position: sticky; top: 0; background: var(--head); font-size: 13px; text-transform: uppercase; letter-spacing: .02em; cursor: pointer; }}
     tr:nth-child(even) td {{ background: #fbfdff; }}
-    td:nth-child(1), th:nth-child(1) {{ width: 65px; white-space: nowrap; }}
-    td:nth-child(3), th:nth-child(3) {{ width: 170px; white-space: nowrap; }}
+    td:nth-child(1), th:nth-child(1) {{ width: 155px; white-space: normal; overflow-wrap: anywhere; word-break: break-word; }}
+    td:nth-child(2), th:nth-child(2) {{ width: 425px; }}
+    td:nth-child(3), th:nth-child(3) {{ width: 160px; white-space: nowrap; }}
     a {{ color: #1f5fae; text-decoration: none; }}
     a:hover {{ text-decoration: underline; }}
     .pt {{ color: #44566c; margin-left: 4px; white-space: nowrap; }}
@@ -501,6 +513,39 @@ def write_ics(rows: list[dict[str, str]]) -> None:
 
 
 def main() -> None:
+    global ZIP_HTML, CAL_JSON, OUT_CSV, OUT_HTML, OUT_ICS
+    parser = argparse.ArgumentParser(description="Build the Daf Yomi blogpost grid from the canonical blog index export.")
+    parser.add_argument("--archive", type=Path, help="Blog archive ZIP or extracted directory.")
+    parser.add_argument("--calendar-json", type=Path, help="Cached Hebcal JSON file.")
+    parser.add_argument("--output-dir", type=Path, default=ROOT, help="Directory for generated CSV, HTML, and ICS files.")
+    args = parser.parse_args()
+
+    if args.archive:
+        archive = args.archive
+        if archive.is_file() and archive.suffix.lower() == ".zip":
+            from zipfile import ZipFile
+            extracted = ROOT / ".build_blog_export"
+            extracted.mkdir(parents=True, exist_ok=True)
+            with ZipFile(archive) as zf:
+                zf.extractall(extracted)
+            candidates = sorted((extracted / "posts").glob("*.cataloguing-my-blogposts-an-organized*.html"), key=lambda p: int(p.name.split(".", 1)[0]), reverse=True)
+            if not candidates:
+                raise FileNotFoundError("Could not find the canonical cataloguing post in the archive")
+            ZIP_HTML = candidates[0]
+        elif archive.is_dir():
+            candidates = sorted((archive / "posts").glob("*.cataloguing-my-blogposts-an-organized*.html"), key=lambda p: int(p.name.split(".", 1)[0]), reverse=True)
+            if not candidates:
+                raise FileNotFoundError("Could not find the canonical cataloguing post in the extracted archive")
+            ZIP_HTML = candidates[0]
+        else:
+            raise FileNotFoundError(f"Archive path does not exist: {archive}")
+    if args.calendar_json:
+        CAL_JSON = args.calendar_json
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    OUT_CSV = args.output_dir / "blogpost_dafyomi_db.csv"
+    OUT_HTML = args.output_dir / "blogpost_dafyomi_grid.html"
+    OUT_ICS = args.output_dir / "blogpost_dafyomi_calendar.ics"
+
     first_date = load_dafyomi_calendar()
     rows = parse_rows(first_date)
     write_csv(rows)

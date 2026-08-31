@@ -1,4 +1,4 @@
-# Talmud Blogpost Dafyomi Grid
+# Talmud Blogpost Daf Yomi Grid
 
 Builds a CSV, interactive local HTML grid, and iCalendar file from my archived index post:
 
@@ -25,8 +25,13 @@ Builds a CSV, interactive local HTML grid, and iCalendar file from my archived i
 ## Rebuild
 
 ```powershell
-python .\build_blogpost_dafyomi_db.py
+python .\build_blogpost_dafyomi_db.py `
+  --archive C:\path\to\blog-export.zip `
+  --calendar-json .\dafyomi_2026_2036.json `
+  --output-dir .
 ```
+
+The archive should contain the canonical `posts/*cataloguing-my-blogposts-an-organized*.html` export. The builder extracts that index, maps its cited daf ranges to the cached Hebcal calendar, and writes all three outputs in the selected output directory.
 
 ## Open Grid
 
