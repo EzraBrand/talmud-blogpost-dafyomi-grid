@@ -1,0 +1,758 @@
+[
+  {
+    "order": 1,
+    "name": "Bereshit",
+    "book": "Genesis",
+    "start": [
+      1,
+      1
+    ],
+    "end": [
+      6,
+      8
+    ],
+    "summary": "Genesis 1:1-6:8"
+  },
+  {
+    "order": 2,
+    "name": "Noach",
+    "book": "Genesis",
+    "start": [
+      6,
+      9
+    ],
+    "end": [
+      11,
+      32
+    ],
+    "summary": "Genesis 6:9-11:32"
+  },
+  {
+    "order": 3,
+    "name": "Lech-Lecha",
+    "book": "Genesis",
+    "start": [
+      12,
+      1
+    ],
+    "end": [
+      17,
+      27
+    ],
+    "summary": "Genesis 12:1-17:27"
+  },
+  {
+    "order": 4,
+    "name": "Vayera",
+    "book": "Genesis",
+    "start": [
+      18,
+      1
+    ],
+    "end": [
+      22,
+      24
+    ],
+    "summary": "Genesis 18:1-22:24"
+  },
+  {
+    "order": 5,
+    "name": "Chayei Sara",
+    "book": "Genesis",
+    "start": [
+      23,
+      1
+    ],
+    "end": [
+      25,
+      18
+    ],
+    "summary": "Genesis 23:1-25:18"
+  },
+  {
+    "order": 6,
+    "name": "Toldot",
+    "book": "Genesis",
+    "start": [
+      25,
+      19
+    ],
+    "end": [
+      28,
+      9
+    ],
+    "summary": "Genesis 25:19-28:9"
+  },
+  {
+    "order": 7,
+    "name": "Vayetzei",
+    "book": "Genesis",
+    "start": [
+      28,
+      10
+    ],
+    "end": [
+      32,
+      3
+    ],
+    "summary": "Genesis 28:10-32:3"
+  },
+  {
+    "order": 8,
+    "name": "Vayishlach",
+    "book": "Genesis",
+    "start": [
+      32,
+      4
+    ],
+    "end": [
+      36,
+      43
+    ],
+    "summary": "Genesis 32:4-36:43"
+  },
+  {
+    "order": 9,
+    "name": "Vayeshev",
+    "book": "Genesis",
+    "start": [
+      37,
+      1
+    ],
+    "end": [
+      40,
+      23
+    ],
+    "summary": "Genesis 37:1-40:23"
+  },
+  {
+    "order": 10,
+    "name": "Miketz",
+    "book": "Genesis",
+    "start": [
+      41,
+      1
+    ],
+    "end": [
+      44,
+      17
+    ],
+    "summary": "Genesis 41:1-44:17"
+  },
+  {
+    "order": 11,
+    "name": "Vayigash",
+    "book": "Genesis",
+    "start": [
+      44,
+      18
+    ],
+    "end": [
+      47,
+      27
+    ],
+    "summary": "Genesis 44:18-47:27"
+  },
+  {
+    "order": 12,
+    "name": "Vayechi",
+    "book": "Genesis",
+    "start": [
+      47,
+      28
+    ],
+    "end": [
+      50,
+      26
+    ],
+    "summary": "Genesis 47:28-50:26"
+  },
+  {
+    "order": 13,
+    "name": "Shemot",
+    "book": "Exodus",
+    "start": [
+      1,
+      1
+    ],
+    "end": [
+      6,
+      1
+    ],
+    "summary": "Exodus 1:1-6:1"
+  },
+  {
+    "order": 14,
+    "name": "Vaera",
+    "book": "Exodus",
+    "start": [
+      6,
+      2
+    ],
+    "end": [
+      9,
+      35
+    ],
+    "summary": "Exodus 6:2-9:35"
+  },
+  {
+    "order": 15,
+    "name": "Bo",
+    "book": "Exodus",
+    "start": [
+      10,
+      1
+    ],
+    "end": [
+      13,
+      16
+    ],
+    "summary": "Exodus 10:1-13:16"
+  },
+  {
+    "order": 16,
+    "name": "Beshalach",
+    "book": "Exodus",
+    "start": [
+      13,
+      17
+    ],
+    "end": [
+      17,
+      16
+    ],
+    "summary": "Exodus 13:17-17:16"
+  },
+  {
+    "order": 17,
+    "name": "Yitro",
+    "book": "Exodus",
+    "start": [
+      18,
+      1
+    ],
+    "end": [
+      20,
+      23
+    ],
+    "summary": "Exodus 18:1-20:23"
+  },
+  {
+    "order": 18,
+    "name": "Mishpatim",
+    "book": "Exodus",
+    "start": [
+      21,
+      1
+    ],
+    "end": [
+      24,
+      18
+    ],
+    "summary": "Exodus 21:1-24:18"
+  },
+  {
+    "order": 19,
+    "name": "Terumah",
+    "book": "Exodus",
+    "start": [
+      25,
+      1
+    ],
+    "end": [
+      27,
+      19
+    ],
+    "summary": "Exodus 25:1-27:19"
+  },
+  {
+    "order": 20,
+    "name": "Tetzaveh",
+    "book": "Exodus",
+    "start": [
+      27,
+      20
+    ],
+    "end": [
+      30,
+      10
+    ],
+    "summary": "Exodus 27:20-30:10"
+  },
+  {
+    "order": 21,
+    "name": "Ki Tisa",
+    "book": "Exodus",
+    "start": [
+      30,
+      11
+    ],
+    "end": [
+      34,
+      35
+    ],
+    "summary": "Exodus 30:11-34:35"
+  },
+  {
+    "order": 22,
+    "name": "Vayakhel",
+    "book": "Exodus",
+    "start": [
+      35,
+      1
+    ],
+    "end": [
+      38,
+      20
+    ],
+    "summary": "Exodus 35:1-38:20"
+  },
+  {
+    "order": 23,
+    "name": "Pekudei",
+    "book": "Exodus",
+    "start": [
+      38,
+      21
+    ],
+    "end": [
+      40,
+      38
+    ],
+    "summary": "Exodus 38:21-40:38"
+  },
+  {
+    "order": 24,
+    "name": "Vayikra",
+    "book": "Leviticus",
+    "start": [
+      1,
+      1
+    ],
+    "end": [
+      5,
+      26
+    ],
+    "summary": "Leviticus 1:1-5:26"
+  },
+  {
+    "order": 25,
+    "name": "Tzav",
+    "book": "Leviticus",
+    "start": [
+      6,
+      1
+    ],
+    "end": [
+      8,
+      36
+    ],
+    "summary": "Leviticus 6:1-8:36"
+  },
+  {
+    "order": 26,
+    "name": "Shmini",
+    "book": "Leviticus",
+    "start": [
+      9,
+      1
+    ],
+    "end": [
+      11,
+      47
+    ],
+    "summary": "Leviticus 9:1-11:47"
+  },
+  {
+    "order": 27,
+    "name": "Tazria",
+    "book": "Leviticus",
+    "start": [
+      12,
+      1
+    ],
+    "end": [
+      13,
+      59
+    ],
+    "summary": "Leviticus 12:1-13:59"
+  },
+  {
+    "order": 28,
+    "name": "Metzora",
+    "book": "Leviticus",
+    "start": [
+      14,
+      1
+    ],
+    "end": [
+      15,
+      33
+    ],
+    "summary": "Leviticus 14:1-15:33"
+  },
+  {
+    "order": 29,
+    "name": "Achrei Mot",
+    "book": "Leviticus",
+    "start": [
+      16,
+      1
+    ],
+    "end": [
+      18,
+      30
+    ],
+    "summary": "Leviticus 16:1-18:30"
+  },
+  {
+    "order": 30,
+    "name": "Kedoshim",
+    "book": "Leviticus",
+    "start": [
+      19,
+      1
+    ],
+    "end": [
+      20,
+      27
+    ],
+    "summary": "Leviticus 19:1-20:27"
+  },
+  {
+    "order": 31,
+    "name": "Emor",
+    "book": "Leviticus",
+    "start": [
+      21,
+      1
+    ],
+    "end": [
+      24,
+      23
+    ],
+    "summary": "Leviticus 21:1-24:23"
+  },
+  {
+    "order": 32,
+    "name": "Behar",
+    "book": "Leviticus",
+    "start": [
+      25,
+      1
+    ],
+    "end": [
+      26,
+      2
+    ],
+    "summary": "Leviticus 25:1-26:2"
+  },
+  {
+    "order": 33,
+    "name": "Bechukotai",
+    "book": "Leviticus",
+    "start": [
+      26,
+      3
+    ],
+    "end": [
+      27,
+      34
+    ],
+    "summary": "Leviticus 26:3-27:34"
+  },
+  {
+    "order": 34,
+    "name": "Bamidbar",
+    "book": "Numbers",
+    "start": [
+      1,
+      1
+    ],
+    "end": [
+      4,
+      20
+    ],
+    "summary": "Numbers 1:1-4:20"
+  },
+  {
+    "order": 35,
+    "name": "Nasso",
+    "book": "Numbers",
+    "start": [
+      4,
+      21
+    ],
+    "end": [
+      7,
+      89
+    ],
+    "summary": "Numbers 4:21-7:89"
+  },
+  {
+    "order": 36,
+    "name": "Beha'alotcha",
+    "book": "Numbers",
+    "start": [
+      8,
+      1
+    ],
+    "end": [
+      12,
+      16
+    ],
+    "summary": "Numbers 8:1-12:16"
+  },
+  {
+    "order": 37,
+    "name": "Sh'lach",
+    "book": "Numbers",
+    "start": [
+      13,
+      1
+    ],
+    "end": [
+      15,
+      41
+    ],
+    "summary": "Numbers 13:1-15:41"
+  },
+  {
+    "order": 38,
+    "name": "Korach",
+    "book": "Numbers",
+    "start": [
+      16,
+      1
+    ],
+    "end": [
+      18,
+      32
+    ],
+    "summary": "Numbers 16:1-18:32"
+  },
+  {
+    "order": 39,
+    "name": "Chukat",
+    "book": "Numbers",
+    "start": [
+      19,
+      1
+    ],
+    "end": [
+      22,
+      1
+    ],
+    "summary": "Numbers 19:1-22:1"
+  },
+  {
+    "order": 40,
+    "name": "Balak",
+    "book": "Numbers",
+    "start": [
+      22,
+      2
+    ],
+    "end": [
+      25,
+      9
+    ],
+    "summary": "Numbers 22:2-25:9"
+  },
+  {
+    "order": 41,
+    "name": "Pinchas",
+    "book": "Numbers",
+    "start": [
+      25,
+      10
+    ],
+    "end": [
+      30,
+      1
+    ],
+    "summary": "Numbers 25:10-30:1"
+  },
+  {
+    "order": 42,
+    "name": "Matot",
+    "book": "Numbers",
+    "start": [
+      30,
+      2
+    ],
+    "end": [
+      32,
+      42
+    ],
+    "summary": "Numbers 30:2-32:42"
+  },
+  {
+    "order": 43,
+    "name": "Masei",
+    "book": "Numbers",
+    "start": [
+      33,
+      1
+    ],
+    "end": [
+      36,
+      13
+    ],
+    "summary": "Numbers 33:1-36:13"
+  },
+  {
+    "order": 44,
+    "name": "Devarim",
+    "book": "Deuteronomy",
+    "start": [
+      1,
+      1
+    ],
+    "end": [
+      3,
+      22
+    ],
+    "summary": "Deuteronomy 1:1-3:22"
+  },
+  {
+    "order": 45,
+    "name": "Vaetchanan",
+    "book": "Deuteronomy",
+    "start": [
+      3,
+      23
+    ],
+    "end": [
+      7,
+      11
+    ],
+    "summary": "Deuteronomy 3:23-7:11"
+  },
+  {
+    "order": 46,
+    "name": "Eikev",
+    "book": "Deuteronomy",
+    "start": [
+      7,
+      12
+    ],
+    "end": [
+      11,
+      25
+    ],
+    "summary": "Deuteronomy 7:12-11:25"
+  },
+  {
+    "order": 47,
+    "name": "Re'eh",
+    "book": "Deuteronomy",
+    "start": [
+      11,
+      26
+    ],
+    "end": [
+      16,
+      17
+    ],
+    "summary": "Deuteronomy 11:26-16:17"
+  },
+  {
+    "order": 48,
+    "name": "Shoftim",
+    "book": "Deuteronomy",
+    "start": [
+      16,
+      18
+    ],
+    "end": [
+      21,
+      9
+    ],
+    "summary": "Deuteronomy 16:18-21:9"
+  },
+  {
+    "order": 49,
+    "name": "Ki Teitzei",
+    "book": "Deuteronomy",
+    "start": [
+      21,
+      10
+    ],
+    "end": [
+      25,
+      19
+    ],
+    "summary": "Deuteronomy 21:10-25:19"
+  },
+  {
+    "order": 50,
+    "name": "Ki Tavo",
+    "book": "Deuteronomy",
+    "start": [
+      26,
+      1
+    ],
+    "end": [
+      29,
+      8
+    ],
+    "summary": "Deuteronomy 26:1-29:8"
+  },
+  {
+    "order": 51,
+    "name": "Nitzavim",
+    "book": "Deuteronomy",
+    "start": [
+      29,
+      9
+    ],
+    "end": [
+      30,
+      20
+    ],
+    "summary": "Deuteronomy 29:9-30:20"
+  },
+  {
+    "order": 52,
+    "name": "Vayeilech",
+    "book": "Deuteronomy",
+    "start": [
+      31,
+      1
+    ],
+    "end": [
+      31,
+      30
+    ],
+    "summary": "Deuteronomy 31:1-30"
+  },
+  {
+    "order": 53,
+    "name": "Ha'azinu",
+    "book": "Deuteronomy",
+    "start": [
+      32,
+      1
+    ],
+    "end": [
+      32,
+      52
+    ],
+    "summary": "Deuteronomy 32:1-52"
+  },
+  {
+    "order": 54,
+    "name": "Vezot Haberakhah",
+    "book": "Deuteronomy",
+    "start": [
+      33,
+      1
+    ],
+    "end": [
+      34,
+      12
+    ],
+    "summary": "Deuteronomy 33:1-34:12"
+  }
+]
