@@ -107,12 +107,34 @@ def calendar(region, index):
             label, names = 'Vezot Haberakhah (Simchat Torah)', ['Vezot Haberakhah']
         else:
             continue
+        portions = [index.by_name[norm(name)] for name in names]
+        first, last = portions[0], portions[-1]
+        full_range = f"{first['book']} {first['start'][0]}:{first['start'][1]}-{last['end'][0]}:{last['end'][1]}"
+        short_range = chapter_range(first['book'], first['start'][0], last['end'][0])
         for name in names:
-            dates[norm(name)].append(dict(reading=d, label=label, torah=event.get('leyning', {}).get('torah', 'Deuteronomy 33:1-34:12' if name == 'Vezot Haberakhah' else ''), calendar_url=event.get('link', 'https://www.hebcal.com/')))
+            dates[norm(name)].append(dict(reading=d, label=label, parasha_range=full_range, chapter_range=short_range, torah=event.get('leyning', {}).get('torah', full_range), calendar_url=event.get('link', 'https://www.hebcal.com/')))
     return dates
 
 
-def build_rows(lead_days=2):
+def chapter_range(book, first, last):
+    short = {'Genesis': 'Gen', 'Exodus': 'Ex', 'Leviticus': 'Lev', 'Numbers': 'Num', 'Deuteronomy': 'Deut'}[book]
+    return f'{short} {first}' + (f'–{last}' if last != first else '')
+
+
+def previous_sunday(iso):
+    d = date.fromisoformat(iso)
+    return str(d - timedelta(days=(d.weekday() + 1) % 7 or 7))
+
+
+def reading_events(region='israel'):
+    unique = {}
+    for events in calendar(region, TorahIndex()).values():
+        for event in events:
+            unique[event['reading']] = event
+    return [unique[d] for d in sorted(unique)]
+
+
+def build_rows():
     index = TorahIndex()
     originals = source_posts()
     daf = json.loads((ROOT / 'dafyomi_2026_2036.json').read_text())['items']
@@ -139,7 +161,7 @@ def build_rows(lead_days=2):
     def add(post, portion, method, reason, refs=None, optional=False):
         key = (post['title'], post['source'], portion['name'])
         if key not in assigned:
-            assigned[key] = dict(type='Parasha', trigger=portion['name'], order=portion['order'], match=method, optional=optional, torah_refs=[], connection=reason, portion_range=portion['summary'], **post)
+            assigned[key] = dict(type='Parasha', trigger=portion['name'], order=portion['order'], match=method, optional=optional, torah_refs=[], connection=reason, portion_range=portion['summary'], chapter_range=chapter_range(portion['book'], portion['start'][0], portion['end'][0]), **post)
         row = assigned[key]
         for ref in refs or []:
             item = dict(text=ref['label'], url=f"https://www.sefaria.org/{ref['book']}.{ref['start'][0]}.{ref['start'][1]}")
@@ -176,7 +198,7 @@ def build_rows(lead_days=2):
     for row in assigned.values():
         row['dates'] = {}
         for region in calendars:
-            row['dates'][region] = [dict(d, post=str(date.fromisoformat(d['reading']) - timedelta(days=lead_days))) for d in calendars[region][norm(row['trigger'])]]
+            row['dates'][region] = [dict(d, post=previous_sunday(d['reading'])) for d in calendars[region][norm(row['trigger'])]]
         rows.append(row)
     for row in rows:
         row['id'] = hashlib.sha256((row['type'] + '|' + row['trigger'] + '|' + row['source'] + '|' + row['title']).encode()).hexdigest()[:24]
@@ -219,18 +241,21 @@ def calendar_ics(rows, region, kind=None, include_optional=False):
             uid_region = region if row['type'] == 'Parasha' else 'both'
             uid = f"v2-{uid_region}-{row['event_id']}-{event['reading']}@ezrabrand.com"
             lines += ['BEGIN:VEVENT', 'UID:' + uid, 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + d.strftime('%Y%m%d'), 'DTEND;VALUE=DATE:' + (d + timedelta(days=1)).strftime('%Y%m%d'), 'SUMMARY:' + ics_escape(f"[{row['type']}] {event['label']} - {row['title']}"), 'DESCRIPTION:' + ics_escape('\n'.join(desc)), 'URL:' + row['url'], 'CATEGORIES:' + ('Parasha' if row['type'] == 'Parasha' else 'Daf Yomi'), 'TRANSP:TRANSPARENT', 'END:VEVENT']
+    if kind != 'Daf Yomi':
+        for event in reading_events(region):
+            d = date.fromisoformat(event['reading'])
+            desc = f"Israel reading schedule" if region == 'israel' else 'Diaspora reading schedule'
+            desc += f"\nParasha: {event['label']}\nTorah range: {event['parasha_range']}\nChapter range: {event['chapter_range']}"
+            lines += ['BEGIN:VEVENT', f"UID:v2-{region}-parasha-reading-{event['reading']}@ezrabrand.com", 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + d.strftime('%Y%m%d'), 'DTEND;VALUE=DATE:' + (d + timedelta(days=1)).strftime('%Y%m%d'), 'SUMMARY:' + ics_escape(f"Parashat {event['label']} ({event['chapter_range']})"), 'DESCRIPTION:' + ics_escape(desc), 'URL:' + event['calendar_url'], 'CATEGORIES:Parasha', 'TRANSP:TRANSPARENT', 'END:VEVENT']
     return '\r\n'.join(map(fold, lines + ['END:VCALENDAR'])) + '\r\n'
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--lead-days', type=int, default=2)
-    args = parser.parse_args()
-    if args.lead_days < 1:
-        parser.error('lead-days must be at least 1')
-    rows = build_rows(args.lead_days)
-    metadata = dict(start=START, end=END, lead_days=args.lead_days, built=datetime.now(timezone.utc).isoformat(), source_posts=len(source_posts()))
-    embedded = json.dumps(dict(meta=metadata, rows=rows), ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
+    parser.parse_args()
+    rows = build_rows()
+    metadata = dict(start=START, end=END, repost_rule='preceding_sunday', schedule='Israel', built=datetime.now(timezone.utc).isoformat(), source_posts=len(source_posts()))
+    embedded = json.dumps(dict(meta=metadata, rows=rows, readings=reading_events('israel')), ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
     template = (ROOT / 'schedule_v2_template.html').read_text()
     (ROOT / 'blogpost_schedule_v2.html').write_text(template.replace('__DATA__', embedded), encoding='utf-8')
     # Keep one stable entry point for the combined table; v1 remains available.
