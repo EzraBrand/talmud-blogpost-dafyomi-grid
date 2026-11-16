@@ -29,3 +29,18 @@ class RecentPostsTests(unittest.TestCase):
             supplement_recent_posts(rows, path, calendar, '2026-10-01')
             self.assertEqual(len(rows), 1)
             self.assertEqual(len(rows[0]['part_links']), 2)
+
+    def test_new_series_is_inserted_in_passage_order(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'posts.csv'
+            path.write_text('post_id,post_date,is_published,title\n1.shebna,2026-11-04,true,Shebna (Sanhedrin 26a-b)\n', encoding='utf-8')
+            rows = [dict(__order=i, **{'blogpost title': title, 'chavrutai_url': 'https://chavrutai.com/talmud/' + passage})
+                    for i, (title, passage) in enumerate([
+                        ('Cross-reference', 'avodah-zarah/27b'),
+                        ('Earlier tractate', 'bava-batra/58a'),
+                        ('Before', 'sanhedrin/22a'),
+                        ('After', 'sanhedrin/38a'),
+                        ('Later tractate', 'niddah/30b')])]
+            supplement_recent_posts(rows, path, {('Sanhedrin', 26): '2032-06-15'}, '2026-10-01')
+            self.assertEqual([r['blogpost title'] for r in rows], ['Cross-reference', 'Earlier tractate', 'Before', 'Shebna', 'After', 'Later tractate'])
+            self.assertEqual([r['__order'] for r in rows], list(range(6)))
