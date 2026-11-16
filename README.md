@@ -4,7 +4,7 @@
 
 [Open the combined Daf Yomi and parasha table](https://ezrabrand.github.io/talmud-blogpost-dafyomi-grid/blogpost_schedule_v2.html).
 
-The v2 table preserves all 500 entries from the original grid and adds 117 direct parasha matches, plus 46 optional broader suggestions. Direct matches cover 50 of the 54 portions; broader suggestions cover the other four. Blue rows are Daf Yomi and green rows are parasha entries. Use the schedule-type dropdown, portion, calendar, connection and date filters, or search by title, source or Torah verse. Each row displays its next relevant date, with upcoming matches highlighted above the table. Sort using the column headings. The original grid remains available below.
+The v2 table preserves all 510 entries from the original grid and adds 119 direct parasha matches, plus 46 optional broader suggestions. Direct matches cover 50 of the 54 portions; broader suggestions cover the other four. Blue rows are Daf Yomi and green rows are parasha entries. Use the schedule-type dropdown, portion, calendar, connection and date filters, or search by title, source or Torah verse. Each row displays its next relevant date, with upcoming matches highlighted above the table. Sort using the column headings. The original grid remains available below.
 
 Torah references are automatically parsed from indexed titles and source citations. A multi-portion range creates a row for every intersecting portion. A single whole chapter uses the portion holding most of its verses. Narrative keywords and curated direct mappings extend coverage; thematic, haftarah and seasonal connections are optional and hidden by default. These are index-based suggestions, not a full-text audit.
 
@@ -64,6 +64,7 @@ Builds a CSV, interactive local HTML grid, and iCalendar file from my archived i
 ```powershell
 python .\build_blogpost_dafyomi_db.py `
   --archive C:\path\to\blog-export.zip `
+  --supplement-since 2026-10-01 `
   --calendar-json .\dafyomi_2026_2036.json `
   --output-dir .
 ```
@@ -75,3 +76,7 @@ The archive should contain the canonical `posts/*cataloguing-my-blogposts-an-org
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\open_blogpost_grid.ps1
 ```
+
+### November 16, 2026 refresh
+
+Rebuilt from the November 16 archive: 510 Daf Yomi entries, 119 direct parasha matches, and 46 optional suggestions. The curated index supplies 509 entries; recent published titles in `posts.csv` supply the missing two-part Sanhedrin 26a-b series and refresh current post slugs. `--supplement-since` reconciles posts published on or after its date, groups numbered parts, and ignores drafts and titles without a recognized Bavli daf citation. Older curated entries remain authoritative. The deployed `gh-pages` homepage retains the original grid; the combined table is at `blogpost_schedule_v2.html`.
