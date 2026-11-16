@@ -285,6 +285,12 @@ def parse_rows(first_date: dict[tuple[str, int], str]) -> list[dict[str, str]]:
 
 def supplement_recent_posts(rows, posts_csv, first_date, since):
     """Reconcile recent published posts with the curated index, retaining series."""
+    tractates = "berakhot shabbat eruvin pesachim shekalim yoma sukkah beitzah rosh-hashanah taanit megillah moed-katan chagigah yevamot ketubot nedarim nazir sotah gittin kiddushin bava-kamma bava-metzia bava-batra sanhedrin makkot shevuot avodah-zarah horayot zevachim menachot chullin bekhorot arakhin temurah keritot meilah kinnim tamid middot niddah".split()
+
+    def passage_order(row):
+        tractate, page = row["chavrutai_url"].rstrip("/").split("/")[-2:]
+        return (tractates.index(tractate), int(page[:-1]), page[-1])
+
     def title_key(title):
         return re.sub(r"[^a-z0-9]", "", title.lower())
 
@@ -323,7 +329,16 @@ def supplement_recent_posts(rows, posts_csv, first_date, since):
                    "blogpost title": title, "daf yomi start date": format_date_human(iso),
                    "blogpost_url": "", "part_links": [],
                    "chavrutai_url": f"https://chavrutai.com/talmud/{tractate_slug(match[1])}/{match[2]}{match[3]}"}
-            rows.append(row)
+            # Insert only new entries; preserve the curated order of existing rows.
+            new_order = passage_order(row)
+            same_tractate = [(i, passage_order(existing)) for i, existing in enumerate(rows)
+                             if passage_order(existing)[0] == new_order[0]]
+            if same_tractate:
+                position = next((i for i, key in same_tractate if key > new_order), same_tractate[-1][0] + 1)
+            else:
+                position = next((i for i, existing in enumerate(rows)
+                                 if passage_order(existing) > new_order), len(rows))
+            rows.insert(position, row)
             by_title[key] = row
         if part:
             label = "Pt" + str(int(part[1]))
@@ -332,6 +347,8 @@ def supplement_recent_posts(rows, posts_csv, first_date, since):
             row["part_links"].sort(key=lambda p: int(re.search(r"\d+", p["label"])[0]))
         else:
             row["blogpost_url"] = url
+    for order, row in enumerate(rows):
+        row["__order"] = order
     return rows
 
 
