@@ -283,6 +283,58 @@ def parse_rows(first_date: dict[tuple[str, int], str]) -> list[dict[str, str]]:
     return rows
 
 
+def supplement_recent_posts(rows, posts_csv, first_date, since):
+    """Reconcile recent published posts with the curated index, retaining series."""
+    def title_key(title):
+        return re.sub(r"[^a-z0-9]", "", title.lower())
+
+    by_title = {title_key(r["blogpost title"]): r for r in rows}
+    with posts_csv.open(encoding="utf-8-sig", newline="") as source:
+        posts = sorted(csv.DictReader(source), key=lambda p: p["post_date"], reverse=True)
+    handled = set()
+    for post in posts:
+        if post["is_published"] != "true" or post["post_date"][:10] < since:
+            continue
+        full_title = post["title"]
+        part = re.match(r"^Pt\s*(\d+)\s+", full_title, re.I)
+        title = re.sub(r"^Pt\s*\d+\s+", "", full_title, flags=re.I)
+        title = re.sub(r"\s*\([^()]*\d+[ab][^()]*\)\s*", "", title).strip()
+        key = title_key(title)
+        identity = (key, int(part[1]) if part else None)
+        if identity in handled:
+            continue
+        citation = None
+        for group in reversed(re.findall(r"\(([^()]*)\)", full_title)):
+            match = re.search(r"\b([A-Za-z][A-Za-z\- ]*?)\s+(\d+)([ab])\b", group)
+            if match and tractate_alias(match[1]):
+                citation = (group, match)
+                break
+        if not citation:
+            continue
+        page_range, match = citation
+        iso = first_date.get((tractate_alias(match[1]), int(match[2])))
+        if not iso:
+            raise ValueError(f"No Daf Yomi date for {full_title}")
+        handled.add(identity)
+        url = "https://www.ezrabrand.com/p/" + post["post_id"].split(".", 1)[1]
+        row = by_title.get(key)
+        if row is None:
+            row = {"__order": len(rows), "__date_iso": iso, "page range": page_range,
+                   "blogpost title": title, "daf yomi start date": format_date_human(iso),
+                   "blogpost_url": "", "part_links": [],
+                   "chavrutai_url": f"https://chavrutai.com/talmud/{tractate_slug(match[1])}/{match[2]}{match[3]}"}
+            rows.append(row)
+            by_title[key] = row
+        if part:
+            label = "Pt" + str(int(part[1]))
+            row["part_links"] = [p for p in row["part_links"] if p["label"] != label]
+            row["part_links"].append({"label": label, "url": url})
+            row["part_links"].sort(key=lambda p: int(re.search(r"\d+", p["label"])[0]))
+        else:
+            row["blogpost_url"] = url
+    return rows
+
+
 def write_csv(rows: list[dict[str, str]]) -> None:
     fieldnames = [
         "page range",
@@ -516,6 +568,7 @@ def main() -> None:
     global ZIP_HTML, CAL_JSON, OUT_CSV, OUT_HTML, OUT_ICS
     parser = argparse.ArgumentParser(description="Build the Daf Yomi blogpost grid from the canonical blog index export.")
     parser.add_argument("--archive", type=Path, help="Blog archive ZIP or extracted directory.")
+    parser.add_argument("--supplement-since", type=date.fromisoformat, help="Also reconcile published posts.csv titles from this ISO date onward.")
     parser.add_argument("--calendar-json", type=Path, help="Cached Hebcal JSON file.")
     parser.add_argument("--output-dir", type=Path, default=ROOT, help="Directory for generated CSV, HTML, and ICS files.")
     args = parser.parse_args()
@@ -548,6 +601,8 @@ def main() -> None:
 
     first_date = load_dafyomi_calendar()
     rows = parse_rows(first_date)
+    if args.supplement_since:
+        rows = supplement_recent_posts(rows, ZIP_HTML.parent.parent / "posts.csv", first_date, args.supplement_since.isoformat())
     write_csv(rows)
     write_html(rows)
     write_ics(rows)
